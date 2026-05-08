@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>나의 웰니스 기록지</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+KR:wght@300;400;700&family=Noto+Sans+KR:wght@300;400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --deep:  #2C3427;
+  --sage:  #8A9E82;
+  --gold:  #B89A6A;
+  --cream: #F5F0E8;
+  --warm:  #E8DDD0;
+  --mist:  #C4C9BE;
+  --gray:  #6B7263;
+  --light: #F8F5F0;
+}
+
+body {
+  background: #e8e4dd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: 'Noto Sans KR', sans-serif;
+  gap: 32px;
+}
+
+.label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: #888;
+  text-transform: uppercase;
+}
+
+/* ── A5 카드 (148mm × 210mm → 560px × 794px) ── */
+.card {
+  width: 560px;
+  background: var(--cream);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+
+/* 상단 헤더 */
+.card-header {
+  background: var(--deep);
+  padding: 28px 36px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-header::after {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(138,158,130,0.15), transparent 70%);
+}
+
+.header-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: var(--sage);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.header-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--cream);
+  margin-bottom: 4px;
+}
+
+.header-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--gold);
+}
+
+.header-date {
+  position: absolute;
+  right: 36px;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: right;
+}
+
+.header-date .date-label {
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--sage);
+  font-family: 'Cormorant Garamond', serif;
+  margin-bottom: 4px;
+}
+
+.header-date .date-box {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.date-unit {
+  border-bottom: 1px solid rgba(196,201,190,0.5);
+  min-width: 28px;
+  height: 20px;
+  font-size: 10px;
+  color: var(--mist);
+  font-family: 'Cormorant Garamond', serif;
+  text-align: center;
+}
+
+.date-sep {
+  color: var(--mist);
+  font-size: 10px;
+}
+
+/* 본문 */
+.card-body {
+  padding: 24px 36px 28px;
+}
+
+/* 섹션 */
+.section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.section-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10px;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.section-label-text {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--deep);
+}
+
+.section-sub {
+  font-size: 9px;
+  color: var(--sage);
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 1px;
+  margin-left: auto;
+}
+
+/* 쓰기 줄 */
+.write-line {
+  border-bottom: 1px solid var(--mist);
+  height: 26px;
+  margin-bottom: 6px;
+  position: relative;
+}
+
+.write-line-short {
+  border-bottom: 1px solid var(--mist);
+  height: 26px;
+  margin-bottom: 6px;
+  width: 70%;
+}
+
+/* 체크박스 그룹 */
+.check-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  color: var(--gray);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 300;
+}
+
+.checkbox {
+  width: 13px;
+  height: 13px;
+  border: 1px solid var(--mist);
+  flex-shrink: 0;
+}
+
+/* 투어 전후 비교 박스 */
+.compare-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.compare-item {
+  background: var(--warm);
+  padding: 10px 12px;
+}
+
+.compare-label {
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--sage);
+  font-family: 'Cormorant Garamond', serif;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.compare-line {
+  border-bottom: 1px solid var(--mist);
+  height: 22px;
+  margin-bottom: 5px;
+}
+
+/* 한 줄 인용 박스 */
+.quote-box {
+  background: var(--deep);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.quote-mark {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  color: var(--gold);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.quote-text {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 11px;
+  color: var(--mist);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* 구분선 */
+.divider {
+  border: none;
+  border-top: 1px solid var(--mist);
+  margin: 18px 0;
+}
+
+.divider-gold {
+  border: none;
+  border-top: 1px solid var(--gold);
+  margin: 0 0 18px;
+  width: 40px;
+}
+
+/* 하단 */
+.card-footer {
+  border-top: 1px solid var(--mist);
+  padding: 14px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--light);
+}
+
+.footer-brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--sage);
+}
+
+.footer-tag {
+  font-size: 9px;
+  color: var(--mist);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+}
+
+/* 별점 */
+.star-row {
+  display: flex;
+  gap: 6px;
+}
+
+.star {
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--mist);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--mist);
+}
+</style>
+</head>
+<body>
+
+<div class="label">나의 웰니스 기록지 · Sample</div>
+
+<div class="card">
+
+  <!-- 헤더 -->
+  <div class="card-header">
+    <div class="header-label">Itaewon Wellness Tour · My Record</div>
+    <div class="header-title">나의 웰니스 기록지</div>
+    <div class="header-sub">나를 돌보는 이태원 웰니스 투어</div>
+    <div class="header-date">
+      <div class="date-label">투어 날짜</div>
+      <div class="date-box">
+        <span class="date-unit"></span>
+        <span class="date-sep">년</span>
+        <span class="date-unit"></span>
+        <span class="date-sep">월</span>
+        <span class="date-unit"></span>
+        <span class="date-sep">일</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 본문 -->
+  <div class="card-body">
+
+    <!-- 인용구 -->
+    <div class="quote-box">
+      <div class="quote-mark">"</div>
+      <div class="quote-text">좋은 웰니스는 거창한 것이 아니라<br>오늘 나를 돌보는 작은 식생활과 생활 태도에서 시작됩니다.</div>
+    </div>
+
+    <!-- 1. 투어 전 나의 웰니스 -->
+    <div class="section">
+      <div class="section-title">
+        <div class="section-num">1</div>
+        <div class="section-label-text">투어 전, 나에게 웰니스란?</div>
+        <div class="section-sub">Before</div>
+      </div>
+      <div class="write-line"></div>
+      <div class="write-line"></div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 2. 오늘 가장 인상 깊었던 순간 -->
+    <div class="section">
+      <div class="section-title">
+        <div class="section-num">2</div>
+        <div class="section-label-text">오늘 가장 인상 깊었던 순간</div>
+        <div class="section-sub">Moment</div>
+      </div>
+      <div class="check-group" style="margin-bottom:10px;">
+        <label class="check-item"><div class="checkbox"></div> 차차이테 다도 체험</label>
+        <label class="check-item"><div class="checkbox"></div> 편지 쓰는 시간</label>
+        <label class="check-item"><div class="checkbox"></div> 건강식 선택</label>
+        <label class="check-item"><div class="checkbox"></div> 옵티마 건강 상담</label>
+        <label class="check-item"><div class="checkbox"></div> 이동 중 웰니스 대화</label>
+        <label class="check-item"><div class="checkbox"></div> 기타: ________</label>
+      </div>
+      <div class="write-line"></div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 3. 투어 전후 비교 -->
+    <div class="section">
+      <div class="section-title">
+        <div class="section-num">3</div>
+        <div class="section-label-text">투어 전 vs 지금, 웰니스가 달라졌나요?</div>
+        <div class="section-sub">Before · After</div>
+      </div>
+      <div class="compare-box">
+        <div class="compare-item">
+          <div class="compare-label">Before · 투어 전</div>
+          <div class="compare-line"></div>
+          <div class="compare-line"></div>
+        </div>
+        <div class="compare-item">
+          <div class="compare-label">After · 지금</div>
+          <div class="compare-line"></div>
+          <div class="compare-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 4. 오늘 나에게 필요했던 웰니스 -->
+    <div class="section">
+      <div class="section-title">
+        <div class="section-num">4</div>
+        <div class="section-label-text">오늘 나에게 가장 필요했던 웰니스는?</div>
+        <div class="section-sub">Today's Wellness</div>
+      </div>
+      <div class="check-group" style="margin-bottom:10px;">
+        <label class="check-item"><div class="checkbox"></div> 정신적 쉼</label>
+        <label class="check-item"><div class="checkbox"></div> 건강한 식사</label>
+        <label class="check-item"><div class="checkbox"></div> 나를 위한 시간</label>
+        <label class="check-item"><div class="checkbox"></div> 새로운 경험</label>
+        <label class="check-item"><div class="checkbox"></div> 몸 돌보기</label>
+        <label class="check-item"><div class="checkbox"></div> 기타: ________</label>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 5. 집에서 실천할 한 가지 -->
+    <div class="section">
+      <div class="section-title">
+        <div class="section-num">5</div>
+        <div class="section-label-text">집에서 실천할 나만의 웰니스 루틴 한 가지</div>
+        <div class="section-sub">My Routine</div>
+      </div>
+      <div class="write-line"></div>
+      <div class="write-line-short"></div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 6. 오늘 만족도 -->
+    <div class="section">
+      <div class="section-title">
+        <div class="section-num">6</div>
+        <div class="section-label-text">오늘 투어 만족도</div>
+        <div class="section-sub">Satisfaction</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div class="star-row">
+          <div class="star">☆</div>
+          <div class="star">☆</div>
+          <div class="star">☆</div>
+          <div class="star">☆</div>
+          <div class="star">☆</div>
+        </div>
+        <span style="font-size:9.5px; color:var(--mist); font-family:'Cormorant Garamond',serif;">( 해당 별에 V 표시해 주세요 )</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 푸터 -->
+  <div class="card-footer">
+    <div class="footer-brand">나를 돌보는 이태원 웰니스 투어 · Seoul 2026</div>
+    <div class="footer-tag">이 기록지는 나를 위한 선물입니다 💚</div>
+  </div>
+
+</div>
+
+</body>
+</html>
